@@ -1,0 +1,15 @@
+.jumbotron {
+    background-image:url('/assets/share_car.jpg');
+    background-repeat:no-repeat;
+    background-size: cover;
+    color:white;
+    max-height:200px;
+    margin-bottom:0px;
+    padding:2px;
+}
+
+.navbar {
+  background-color: #415569;
+  margin:0; /*add this*/
+}
+

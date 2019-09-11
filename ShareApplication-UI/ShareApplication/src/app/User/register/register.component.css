@@ -1,0 +1,20 @@
+#RegisterBackGroundImagen {
+  background-image:
+  linear-gradient(to bottom, rgba(48,56,83,0) 40%, #303853 90%, #303853 100%),
+  url("/assets/loginbackground.jpg");
+  background-size:100%, 100%;
+
+  height: 100%;
+  background-repeat:no-repeat, no-repeat;
+  background-color:#303853;
+  background-attachment:fixed, fixed;
+  filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#00303853', endColorstr='#303853',GradientType=0)
+}
+
+.form-control.login-user-new {
+  border:0px solid;
+}
+
+.container{
+  height:72vh;
+}

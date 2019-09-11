@@ -1,0 +1,29 @@
+ /************* Generic CSS ****************/
+
+ .area-padding{padding:20px 0px 60px 0px;}
+
+/************** Service CSS ******/
+
+.service-box1 {padding:15px;background:#53b2b0;color:#fff;}
+.service-box2 {padding:15px;background:#ba0b51;color:#fff;}
+.service-box3 {padding:15px;background:#518e4a;color:#fff;}
+
+/************* Carousel CSS **************/
+
+.carousel-item img {width:100%; max-height:380px; display: block;}
+.caraous-title {
+    position: absolute;
+    top: 20%;
+    left: 15.8%;
+    right: auto;
+    width: 96.66666666666666%;
+    color: #000;
+}
+.caraous-title h1 {color:#000;font-size:55px; font-weight:700;}
+.caraous-img-box img { width:40%; }
+
+/************* Button **************/
+
+.site-btn{padding:2px 25px 2px 25px;background:#DF314D;font-size:14px;color:#fff;border: none;border-radius: 4px;}
+.site-btn:hover{background:#C9223D;color:#fff;}
+
