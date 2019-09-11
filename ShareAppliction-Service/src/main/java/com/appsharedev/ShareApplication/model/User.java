@@ -1,14 +1,10 @@
 package com.appsharedev.ShareApplication.model;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -69,11 +65,15 @@ public class User {
         this.email = email;
     }
 
-    protected User() {
+    public User() {
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Integer getId() {

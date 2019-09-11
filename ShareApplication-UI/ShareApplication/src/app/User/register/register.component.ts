@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   }
 
   saveUser() {
-    this.service.createUser(this.newUser).subscribe(data => {
+    this.service.createUserHttp(this.newUser).subscribe(data => {
       alert('Usuario creado correctamente');
       this.router.navigate(['']);
     });

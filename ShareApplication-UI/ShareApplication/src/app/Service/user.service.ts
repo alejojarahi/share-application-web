@@ -25,7 +25,7 @@ export class UserService {
     return this.http.get<User[]>(this.UrlUsers);
   }
 
-  createUser(newUser: User): Observable<User> {
+  createUserHttp(newUser: User): Observable<User> {
     const body: User = {
       document: newUser.document,
       firstname: newUser.firstname,
@@ -35,4 +35,10 @@ export class UserService {
     }
     return this.http.post<User>(this.UrlRegister, body, httpOptions);
   }
+
+  /*userAuthentication(email, password): Observable<User> {
+    var headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(email.toLowerCase() + ':' + password) });
+    return this.http.get(this.loginURL + data, { headers });
+    return this.http.post<User>(this.UrlRegister, body, httpOptions);
+  }*/
 }
