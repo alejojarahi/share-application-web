@@ -1,10 +1,16 @@
 package com.appsharedev.ShareApplication.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -56,6 +62,15 @@ public class User {
     @Email
     private String email;
 
+//ROLES
+    // Colum rol of user is not null
+    @NotNull
+    // to users can have many roles and roles to have many roles (Relation many to many)
+    @ManyToMany
+    // create table interception USER_ROLES with columns USER_ID and ROL_ID which foreign  keys
+    @JoinTable(name = "USERS_ROLES", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROL_ID"))
+    private Set<Rol> roles = new HashSet<>(); // is a set of objects type Rol
+
     // Constructor of entity User
     public User(String password, Integer document, String firstname, String lastname, String email) {
         this.password = password;
@@ -65,6 +80,7 @@ public class User {
         this.email = email;
     }
 
+    // Default constructor for users
     public User() {
     }
 
@@ -110,6 +126,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
     }
 
     @Override
