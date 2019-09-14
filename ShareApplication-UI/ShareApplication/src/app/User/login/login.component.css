@@ -18,3 +18,12 @@
 .container{
   height:72vh;
 }
+
+button.btn-submit{
+  background-color: #00e5e4;
+  color: #fff;
+  width: 100%;
+}
+button.btn-submit:focus,button.btn-submit:hover{
+  background-color: #00e5e4;
+}

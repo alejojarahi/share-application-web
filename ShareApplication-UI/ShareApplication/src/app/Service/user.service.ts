@@ -8,6 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+// This class is a service, can be injectable in other components
 @Injectable({
   providedIn: 'root'
 })
@@ -31,14 +32,9 @@ export class UserService {
       firstname: newUser.firstname,
       lastname: newUser.lastname,
       email: newUser.email,
-      password: newUser.password
-    }
+      password: newUser.password,
+      roles: ['ROLE_USER']
+    };
     return this.http.post<User>(this.UrlRegister, body, httpOptions);
   }
-
-  /*userAuthentication(email, password): Observable<User> {
-    var headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(email.toLowerCase() + ':' + password) });
-    return this.http.get(this.loginURL + data, { headers });
-    return this.http.post<User>(this.UrlRegister, body, httpOptions);
-  }*/
 }

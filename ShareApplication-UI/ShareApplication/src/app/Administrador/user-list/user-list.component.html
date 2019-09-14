@@ -4,23 +4,27 @@
       <h3>Users</h3>
     </div>
     <div class="card-body"></div>
-    <table class="table table-hover">
+    <table *ngIf="isLogin === true" class="table table-dark">
       <thead>
         <tr>
-          <th>ID</th>
           <th>DOCUMENT</th>
           <th>FIRST NAME</th>
           <th>LAST NAME</th>
           <th>EMAIL</th>
+          <th scope="col">VER</th>
+          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">EDITAR</th>
+          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">BORRAR</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users" class="text-center">
-          <td>{{user.id}}</td>
+        <tr *ngFor="let user of users">
           <td>{{user.document}}</td>
           <td>{{user.firstname}}</td>
           <td>{{user.lastname}}</td>
           <td>{{user.email}}</td>
+          <td><button class="btn btn-primary" routerLink="/user/{{user.document}}">Ver</button></td>
+          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-warning" routerLink="/user/edit/{{user.document}}">Editar</button></td>
+          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-danger">Borrar</button></td>
         </tr>
       </tbody>
     </table>

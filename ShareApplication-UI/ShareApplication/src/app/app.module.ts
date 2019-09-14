@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module'; // Routing for used multiple routes in the application
-import { HttpClientModule } from '@angular/common/http'; // Model for used request http
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // Model for used request http
 
 // Forms use functions in html and components for 'way binding'
 import { NgModule } from '@angular/core';
@@ -12,7 +12,6 @@ import { HomeComponent } from './home/home.component';
 
 // List components for view Administrator users
 import { UserListComponent } from './Administrador/user-list/user-list.component';
-import { UserAddComponent } from './Administrador/user-add/user-add.component';
 import { UserEditComponent } from './Administrador/user-edit/user-edit.component';
 
 // Login and register system for news users
@@ -21,12 +20,15 @@ import { RegisterComponent } from './User/register/register.component';
 
 // Configurate services used in the application
 import { UserService } from './Service/user.service';
+import { AuthService } from './Service/Auth/auth.service';
+import { TokenService } from './Service/Auth/token.service';
+import { InterceptorService} from './Service/interceptor.service';
+import { SessionService } from './Service/session.service';
 
 @NgModule({
   declarations: [ // names of components used in this application
     AppComponent,
     UserListComponent,
-    UserAddComponent,
     UserEditComponent,
     HomeComponent,
     LoginComponent,
@@ -39,7 +41,11 @@ import { UserService } from './Service/user.service';
     HttpClientModule  // Used the CRUD connection with the database
   ],
   providers: [ // Registed services for used in all components of the application
-    UserService
+    /*UserService,
+    AuthService,
+    TokenService,
+    SessionService,*/
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true } // Service for add the token in all the http requests
   ],
   bootstrap: [AppComponent]
 })

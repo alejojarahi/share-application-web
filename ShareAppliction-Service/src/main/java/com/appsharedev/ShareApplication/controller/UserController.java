@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST}) // REST CORS
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST}) // REST CORS
 @RequestMapping("/user")
 public class UserController {
 
