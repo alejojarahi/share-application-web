@@ -32,4 +32,8 @@ export class UserService {
   getUserByEmail(email: string) {
     return this.http.get<User>(this.userUrl + email);
   }
+
+  getUsersByPage(page: number, size: number): Observable<any> {
+    return this.http.get<User[]>(this.userUrl + `list?page=${page}&size=${size}`);
+  }
 }

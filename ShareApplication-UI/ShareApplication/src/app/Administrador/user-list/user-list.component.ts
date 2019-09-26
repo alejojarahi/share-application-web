@@ -34,6 +34,14 @@ export class UserListComponent implements OnInit {
   // List users in database
   users: User[] = [];
 
+  // Pagination params
+  totalPages: Array<number>;
+  page = 0;
+  size = 10;
+  isFirst = false;
+  isLast = false;
+
+  // State loading the list data
   loading = true;
 
   // Function for constant check the status in this component
@@ -44,11 +52,43 @@ export class UserListComponent implements OnInit {
     if (this.isLogin) {
       this.roles = this.sessionService.getRoles();
     }
+    this.loadUsers(); // load users list for pagination
+  }
 
-    // This load the information the all users in the array for print in page
-    this.userService.getUsers().subscribe(data => {
-      this.users = data;
+  // This load the information the all users in the array for print in page
+  loadUsers() {
+    this.userService.getUsersByPage(this.page, this.size).subscribe(data => {
+      this.users = data.content;
+      this.isFirst = data.first;
+      this.isLast = data.last;
+      this.totalPages = new Array(data.totalPages);
       this.loading = false;
+
     });
+  }
+
+  // This method check if page not is the first, and rewinder the page
+  pageRewind(): void {
+    if (!this.isFirst) {
+      this.loading = true;
+      this.page--;
+      this.loadUsers();
+    }
+  }
+
+  // This method check if page not is the last, and forward the page
+  pageForward(): void {
+    if (!this.isLast) {
+      this.loading = true;
+      this.page++;
+      this.loadUsers();
+    }
+  }
+
+  // This method change of page navigate
+  setPage(page: number): void {
+    this.loading = true;
+    this.page = page;
+    this.loadUsers();
   }
 }

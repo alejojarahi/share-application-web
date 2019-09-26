@@ -1,7 +1,7 @@
 .loader-page {
   position: fixed;
   z-index: 25000;
-  
+
   left: 0px;
   top: 0px;
   height: 100%;
@@ -41,3 +41,7 @@
   animation: rotarload 1s ease-out infinite;
   transform: rotate(0deg);
 }
+
+
+
+

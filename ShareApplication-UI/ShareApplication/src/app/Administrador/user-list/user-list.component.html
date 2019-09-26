@@ -1,36 +1,58 @@
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" crossorigin="anonymous">
+</head>
+
 <div class="container">
   <div class="card">
     <div class="card-header">
-      <h3>Users</h3>
+      <h2 class="text-center">Users</h2>
     </div>
-    <div class="card-body"></div>
 
     <div class="loader-page" *ngIf="loading"></div>
 
-    <table *ngIf="isLogin === true && !loading" class="table table-dark">
+    <table *ngIf="isLogin === true && !loading" class="table table-striped table-dark text-center">
 
       <thead>
         <tr>
           <th>DOCUMENT</th>
-          <th>FIRST NAME</th>
-          <th>LAST NAME</th>
+          <th>NAME</th>
           <th>EMAIL</th>
-          <th scope="col">VER</th>
-          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">EDITAR</th>
-          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">BORRAR</th>
+          <th scope="col">VIEW USER</th>
+          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">EDIT USER</th>
+          <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">DELETE USER</th>
         </tr>
       </thead>
 
       <tbody *ngIf="users">
+        <!-- Print params of the list users -->
         <tr *ngFor="let user of users">
           <td>{{user.document}}</td>
-          <td>{{user.firstname}}</td>
-          <td>{{user.lastname}}</td>
+          <td>{{user.firstname}} {{user.lastname}}</td>
           <td>{{user.email}}</td>
-          <td><button class="btn btn-primary" routerLink="/user/{{user.document}}">Ver</button></td>
-          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-warning" routerLink="/user/edit/{{user.document}}">Editar</button></td>
-          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-danger">Borrar</button></td>
+          <!-- Buttons for the row in the user -->
+          <td><button class="btn btn-primary" routerLink="/user/{{user.document}}">View</button></td>
+          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-warning" routerLink="/user/edit/{{user.document}}">Edit</button></td>
+          <td *ngIf="roles[IS_ROL_ADMIN] === 'admin'"><button class="btn btn-danger">Delete</button></td>
         </tr>
+
+        <!-- Print pagination -->
+        <tr>
+          <td>
+            <i style="cursor: pointer;" class="fas fa-angle-double-left fa-2x" (click)="pageRewind()"></i>
+          </td>
+          <!-- If user is admin the attribute colspan = "4", not is admin colspan = "2" -->
+          <td [attr.colspan]="roles[IS_ROL_ADMIN] === 'admin' ? 4 : 2">
+            <span *ngFor="let p of totalPages; let i = index">
+              <a style="cursor: pointer;" (click)="setPage(i)" [ngClass]="{'text-primary': i === page }">
+                {{ i+1 }}&nbsp;&nbsp;&nbsp;
+              </a>
+            </span>
+          </td>
+          <td>
+            <i style="cursor: pointer;" class="fas fa-angle-double-right fa-2x" (click)="pageForward()"></i>
+          </td>
+        </tr>
+
       </tbody>
     </table>
   </div>

@@ -22,6 +22,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    // Register new users in database
     @PostMapping(value = "/register")
     public ResponseEntity<?> userRegister(@Valid @RequestBody User user, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -35,6 +36,7 @@ public class AuthController {
         return this.authService.registerUser(user);
     }
 
+    // Check user credentials (username/email and password) for login user
     @PostMapping(value = "/login")
     public ResponseEntity<JwtDTO> userLogin(@Valid @RequestBody LoginUser user, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -48,11 +50,13 @@ public class AuthController {
         return this.authService.loginUserValidate(user);
     }
 
+    // Check if exists username/email registered in database
     @GetMapping(value = "/search", params = {"email"})
     public Boolean existsEmail(@RequestParam(name = "email") String email) {
         return authService.existsEmail(email);
     }
 
+    // Check if exists document registered in database
     @GetMapping(value = "/search", params = {"document"})
     public Boolean existsDocument(@RequestParam(name = "document") Integer document) {
         return authService.existsDocument(document);

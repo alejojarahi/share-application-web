@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
-
 @Entity
 @Table(name = "ROLES")
 public class Rol {
@@ -40,8 +39,4 @@ public class Rol {
     public RolName getRolname() {
         return rolname;
     }
-
-    /*public void setRolname(RolName rolename) {
-        this.rolname = rolname;
-    }*/
 }

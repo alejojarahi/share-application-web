@@ -51,6 +51,5 @@ export class AppComponent implements OnInit {
     this.tokenService.logOut();
     this.isLogin = false;
     window.location.reload(); // Reload the navegation web application in the url current
-    this.router.navigate(['/home']);
   }
 }
