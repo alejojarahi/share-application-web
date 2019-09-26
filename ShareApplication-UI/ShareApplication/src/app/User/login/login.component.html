@@ -21,26 +21,35 @@
                 <div class="card-header text-center" style="font-size: 20px">Login in Share a Sit</div>
 
                   <div class="card-body">
-                    <form #loginForm="ngForm" (ngSubmit)="OnLogin(Email.value,Password.value)">
+
+                    <!-- Defined the formulare -->
+                    <form [formGroup]="formLogin" (ngSubmit)="OnLogin()">
 
                       <!-- Email input -->
                       <div class="form-group">
                         <label>Email address</label>
-                        <input #Email ngModel class="form-control" placeholder="yourmail@example.com" name="email" type="text" required>
+                        <input  formControlName="email" type="text" class="form-control" placeholder="yourmail@example.com">
+                        <div *ngIf="formLogin.get('email').errors && formLogin.get('email').dirty" class="form-control is-invalid">
+                          <p *ngIf="formLogin.get('email').hasError('required')">The email is requerid</p>
+                          <p *ngIf="formLogin.get('email').hasError('email')">This text not is a email</p>
+                        </div>
                       </div>
 
                       <!-- Password input -->
                       <div class="form-group">
                         <label>Password</label>
-                        <input #Password ngModel class="form-control" placeholder="Password" name="password" type="password" autocomplete="off" required>
+                        <input formControlName="password" type="password" class="form-control" placeholder="your password">
+                        <div *ngIf="formLogin.get('password').errors && formLogin.get('password').dirty" class="form-control is-invalid">
+                          <p *ngIf="formLogin.get('password').hasError('required')">The password is requerid</p>
+                        </div>
                       </div>
 
                       <!-- Button submit -->
-                      <button [disabled]="!loginForm.valid" class="btn btn-submit btn-block" type="submit">Sign in</button>
+                      <button [disabled]="formLogin.invalid" class="btn btn-submit btn-block" type="submit">Sign in</button>
 
                       <!-- Error submit -->
-                      <div *ngIf="loginForm.submitted && isLoginFail" class="alert alert-danger mt-3">
-                          Error this action, {{ errorMsg }}
+                      <div *ngIf="isLoginFail" class="alert alert-danger mt-3">
+                        {{ message }}
                       </div>
 
                     </form>

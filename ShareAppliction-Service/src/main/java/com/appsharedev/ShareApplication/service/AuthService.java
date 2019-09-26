@@ -1,12 +1,14 @@
 package com.appsharedev.ShareApplication.service;
 
 import com.appsharedev.ShareApplication.model.auth.JwtDTO;
+import com.appsharedev.ShareApplication.others.CustomHttpResponse;
 import com.appsharedev.ShareApplication.security.JwtProvider;
 import com.appsharedev.ShareApplication.model.auth.LoginUser;
 import com.appsharedev.ShareApplication.model.Rol;
 import com.appsharedev.ShareApplication.model.User;
 import com.appsharedev.ShareApplication.model.enums.RolName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,13 +41,22 @@ public class AuthService {
     JwtProvider jwtProvider;
 
     // Validation and create new user in the system
-    public User registerUser(User user) {
+    public ResponseEntity<?> registerUser(User user) {
+        if (this.userService.existUserByEmail(user.getEmail()))
+            return new ResponseEntity<>(new String("There is already a user with this email"), HttpStatus.BAD_REQUEST);
+        if (this.userService.existUserByDocument(user.getDocument()))
+            return new ResponseEntity<>(new String("There is already a user with this document"), HttpStatus.BAD_REQUEST);
         Set<Rol> roles = new HashSet<>();
         Rol rolUser = rolService.getByRolName(RolName.ROLE_USER).get();
         roles.add(rolUser);
         user.setRoles(roles);
         user.setPassword(encoder.encode(user.getPassword()));
-        return this.userService.addUser(user);
+        this.userService.addUser(user);
+
+        // The HttpStatus CREATED and OK must create a object with message response
+        CustomHttpResponse customHttpResponse = new CustomHttpResponse();
+        customHttpResponse.setMessage("The user was created successfully");
+        return new ResponseEntity<>(customHttpResponse, HttpStatus.CREATED);
     }
 
     // Validate login user in the system
@@ -60,6 +71,22 @@ public class AuthService {
         String jwt = jwtProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+        CustomHttpResponse customHttpResponse = new CustomHttpResponse();
+        customHttpResponse.setMessage("The user was created successfully");
         return new ResponseEntity<JwtDTO>(jwtDTO, HttpStatus.OK);
+    }
+
+    // Check if exists in database a email registed
+    public Boolean existsEmail(String email) {
+        if(this.userService.getUserByEmail(email) != null)
+            return true;
+        return false;
+    }
+
+    // Check if exists in database a document registed
+    public Boolean existsDocument(Integer document) {
+        if(this.userService.getUserByDocument(document) != null)
+            return true;
+        return false;
     }
 }

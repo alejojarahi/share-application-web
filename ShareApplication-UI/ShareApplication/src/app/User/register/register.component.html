@@ -1,4 +1,11 @@
-<div id="RegisterBackGroundImagen">
+<!-- If the users is registered -->
+<div *ngIf="isRegister; else noRegister">
+  {{ message }}
+</div>
+
+<!-- If the users not is registered -->
+<ng-template #noRegister>
+  <div id="RegisterBackGroundImagen">
     <div class="col s8 offset-s2">
       <div class="container">
           <div class="row">
@@ -12,52 +19,93 @@
               <div class="card" style="margin-top: 20px;">
                 <div class="card-header text-center" style="font-size: 20px">Register in Share a Sit Application</div>
                 <div class="card-body">
-                  <form action="">
 
+
+                  <form [formGroup]="formRegister" (ngSubmit)="saveUser()">
+
+                    <!--First and last name input -->
                     <div class="row">
                       <div class="col-md">
                         <div class="form-group">
                           <label>First name</label>
-                          <input [(ngModel)]="newUser.firstname" class="form-control" placeholder="" name="firstname" type="text" required>
+                          <input formControlName="firstname" type="text" class="form-control">
+                          <div *ngIf="formRegister.get('firstname').errors && formRegister.get('firstname').dirty" class="form-control is-invalid">
+                            <!-- Errors First name Validations -->
+                            <p *ngIf="formRegister.get('firstname').hasError('required')">The first name is requerid</p>
+                            <p *ngIf="formRegister.get('firstname').hasError('minlength')">Min of 2 characters</p>
+                            <p *ngIf="formRegister.get('firstname').hasError('maxlength')">Max of 20 characters</p>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md">
                         <div class="form-group">
                           <label>Last name</label>
-                          <input [(ngModel)]="newUser.lastname" class="form-control" placeholder="" name="lastname" type="text" requerid>
+                          <input formControlName="lastname" type="text" class="form-control">
+                          <div *ngIf="formRegister.get('lastname').errors && formRegister.get('lastname').dirty" class="form-control is-invalid">
+                            <!-- Errors Last name Validations -->
+                            <p *ngIf="formRegister.get('lastname').hasError('required')">The last name is requerid</p>
+                            <p *ngIf="formRegister.get('lastname').hasError('minlength')">Min of 2 characters</p>
+                            <p *ngIf="formRegister.get('lastname').hasError('maxlength')">Max of 20 characters</p>
+                          </div>
                         </div>
                       </div>
                     </div>
 
+                    <!-- Email input -->
                     <div class="row">
                       <div class="col-md">
                         <div class="form-group">
                           <label>Email addres</label>
-                          <input [(ngModel)]="newUser.email" class="form-control" placeholder="" name="email" type="email" required>
+                          <input formControlName="email" type="email" class="form-control">
+                          <div *ngIf="formRegister.get('email').errors && formRegister.get('email').dirty" class="form-control is-invalid">
+                            <!-- Errors email Validations -->
+                            <p *ngIf="formRegister.get('email').hasError('pattern')">This domain of email must be unal.edu.co</p>
+                            <p *ngIf="formRegister.get('email').hasError('required')">The email is requerid</p>
+                            <p *ngIf="formRegister.get('email').hasError('email')">This is not email</p>
+
+                            <p *ngIf="formRegister.get('email').hasError('emailExists')">This email already exists</p>
+                          </div>
                         </div>
                       </div>
                     </div>
 
+                    <!-- Password and personal document input -->
                     <div class="row">
                       <div class="col-md">
                         <div class="form-group">
                           <label>Password</label>
-                          <input [(ngModel)]="newUser.password" class="form-control" placeholder="" name="password" type="password" required>
+                          <input formControlName="password" type="password" class="form-control">
+                          <div *ngIf="formRegister.get('password').errors && formRegister.get('password').dirty" class="form-control is-invalid">
+                            <!-- Errors password Validations -->
+                            <p *ngIf="formRegister.get('password').hasError('required')">Password is requerid</p>
+                            <p *ngIf="formRegister.get('password').hasError('LowerCase')">This must have lowercase</p>
+                            <p *ngIf="formRegister.get('password').hasError('toUpperCase')">This must have uppercase</p>
+                            <p *ngIf="formRegister.get('password').hasError('format')">This must have numbers</p>
+                          </div>
                         </div>
                       </div>
                       <div class="col-md">
                         <div class="form-group">
                           <label>Personal document</label>
-                          <input [(ngModel)]="newUser.document" class="form-control" placeholder="" name="document" type="number" required>
+                          <input formControlName="document" type="number" class="form-control">
+                          <div *ngIf="formRegister.get('document').errors && formRegister.get('document').dirty" class="form-control is-invalid">
+                            <!-- Errors document Validations -->
+                            <p *ngIf="formRegister.get('document').hasError('required')">Document is requerid</p>
+                            <p *ngIf="formRegister.get('document').hasError('documentExists')">Document already exists</p>
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <input type="checkbox" value="1" id="account_accept" />
+                    <input formControlName="confirmation" type="checkbox" />
                     <label class="form-label text-6-xs" for="account_accept">Accept that the information entered is correct.</label>
 
-                    <hr/>
-                    <button class="btn btn-success btn-block" type="submit" (click)="saveUser()">Sign up</button>
+                    <!-- Button submit -->
+                    <hr>
+                    <button [disabled]="formRegister.invalid" class="btn btn-success btn-block" type="submit" >Sign up</button>
+
+                    <!-- Error submit back-end -->
+                    <div *ngIf="isRegisterFail" class="alert alert-danger mt-3">Errors in the register: {{ message }}</div>
 
                   </form>
                 </div>
@@ -67,4 +115,5 @@
       </div>
     </div>
   </div>
+</ng-template>
 

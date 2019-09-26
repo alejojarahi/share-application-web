@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // M
 
 // Forms use functions in html and components for 'way binding'
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Principal component
 import { AppComponent } from './app.component';
@@ -22,8 +22,11 @@ import { RegisterComponent } from './User/register/register.component';
 import { UserService } from './Service/user.service';
 import { AuthService } from './Service/Auth/auth.service';
 import { TokenService } from './Service/Auth/token.service';
-import { InterceptorService} from './Service/interceptor.service';
 import { SessionService } from './Service/session.service';
+import { InterceptorService} from './Service/interceptor.service';
+
+// Configure directives
+import { PasswordValidationDirective } from './Validations/directive/password-validation.directive';
 
 @NgModule({
   declarations: [ // names of components used in this application
@@ -32,12 +35,14 @@ import { SessionService } from './Service/session.service';
     UserEditComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PasswordValidationDirective // Directive password validation
   ],
   imports: [
     BrowserModule,
     AppRoutingModule, // Usted the directive route for the routing of components
     FormsModule,      // Used the directive imported NgModel
+    ReactiveFormsModule, // Usted the directive for form with FormBuilder (The logic is in the controller)
     HttpClientModule  // Used the CRUD connection with the database
   ],
   providers: [ // Registed services for used in all components of the application

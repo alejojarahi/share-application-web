@@ -15,26 +15,21 @@ const httpOptions = {
 
 export class UserService {
 
-  UrlRegister = 'http://localhost:8034/user/adduser';
-  UrlLogin = 'http://localhost:8034/user/';
-  UrlUsers = 'http://localhost:8034/user/all';
+  // Url of user http request
+  userUrl = 'http://localhost:8034/user/';
 
   // Defined the module to used in this class
   constructor(private http: HttpClient) { }
 
   getUsers() {
-    return this.http.get<User[]>(this.UrlUsers);
+    return this.http.get<User[]>(this.userUrl + 'all');
   }
 
-  createUserHttp(newUser: User): Observable<User> {
-    const body: User = {
-      document: newUser.document,
-      firstname: newUser.firstname,
-      lastname: newUser.lastname,
-      email: newUser.email,
-      password: newUser.password,
-      roles: ['ROLE_USER']
-    };
-    return this.http.post<User>(this.UrlRegister, body, httpOptions);
+  getUserByDocument(document: number) {
+    return this.http.get<User>(this.userUrl + document);
+  }
+
+  getUserByEmail(email: string) {
+    return this.http.get<User>(this.userUrl + email);
   }
 }

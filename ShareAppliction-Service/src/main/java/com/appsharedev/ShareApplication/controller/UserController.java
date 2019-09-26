@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST}) // REST CORS
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET, RequestMethod.POST}) // REST CORS
 @RequestMapping("/user")
 public class UserController {
 
@@ -29,13 +29,18 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/{document}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User getUserById(@PathVariable(name = "document") Integer document) {
+    @GetMapping(value = "/search", params = "/{document}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUserById(@RequestParam(name = "document") Integer document) {
         return userService.getUserByDocument(document);
     }
 
+    @GetMapping(value = "/search", params = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUserById(@RequestParam(name = "email") String email) {
+        return userService.getUserByEmail(email);
+    }
+
     @PostMapping(value = "/adduser", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User addNewUser(@Valid @RequestBody User user) {
         return this.userService.addUser(user);
     }

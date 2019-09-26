@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Import the models use in this component
@@ -26,13 +26,15 @@ export class UserListComponent implements OnInit {
 
   // Define variables use for define the status of session and roles
   isLogin = false;
-  roles: string[];
+  @Input() roles: string[];
 
   // Dependency Injection
-  constructor(private sessionService: SessionService, private userService: UserService, private router: Router) { }
+  constructor(private sessionService: SessionService, private userService: UserService, private router: Router) { this.loading = true; }
 
   // List users in database
   users: User[] = [];
+
+  loading = true;
 
   // Function for constant check the status in this component
   ngOnInit() {
@@ -46,7 +48,7 @@ export class UserListComponent implements OnInit {
     // This load the information the all users in the array for print in page
     this.userService.getUsers().subscribe(data => {
       this.users = data;
-      console.log(data);  // print in consola the datas
+      this.loading = false;
     });
   }
 }

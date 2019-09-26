@@ -22,21 +22,21 @@ export class AuthService {
   // Defined the modules to used in this class
   constructor(private http: HttpClient) { }
 
+  // Method for autchenticate users in database with services REST using the url of service http://localhost:8034/auth/login
   userAuthentication(userAuth: User): Observable<JwtModel> {
-    console.log(userAuth);
     return this.http.post<JwtModel>(this.authUrl + 'login', userAuth, httpOptions);
   }
 
   // Method for create new users in database with services REST using the url of service http://localhost:8034/auth/register
-  createUserHttp(newUser: User): Observable<User> {
-    const user: User = {
-      document: newUser.document,
-      firstname: newUser.firstname,
-      lastname: newUser.lastname,
-      email: newUser.email,
-      password: newUser.password,
-      roles: ['ROLE_USER'] // This is default role, the value is irrelevant, the backend generate the rol for defect
-    }
-    return this.http.post<User>(this.authUrl + 'register', user, httpOptions);
+  createNewUser(newUser: User): Observable<any> {
+    return this.http.post<any>(this.authUrl + 'register', newUser, httpOptions);
+  }
+
+  existsDocument(document: number) {
+    return this.http.get(this.authUrl + 'search?document=' + document);
+  }
+
+  existsEmail(email: string) {
+    return this.http.get(this.authUrl + 'search?email=' + email);
   }
 }

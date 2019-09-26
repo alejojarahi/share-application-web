@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
+
+// Import services
 import { AuthService } from 'src/app/Service/Auth/auth.service';
 import { TokenService } from 'src/app/Service/Auth/token.service';
-import { User } from 'src/app/Models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +14,16 @@ import { User } from 'src/app/Models/user.model';
 export class LoginComponent implements OnInit {
 
   form: any = {};
-  user: User;
+  formLogin: FormGroup;
+
   isLogged = false;
   isLoginFail = false;
   roles: string[] = [];
-  errorMsg = '';
+  message = '';
 
-  constructor(private authService: AuthService, private tokenService: TokenService, private router: Router) { }
+  constructor(private authService: AuthService, private tokenService: TokenService, public formBuilder: FormBuilder) {
+    this.buildForm();
+  }
 
   ngOnInit() {
     // Check with the tokenService if there is a token in the session
@@ -29,13 +34,18 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  // Method for the users sign in with application
-  OnLogin(email: string, password: string): void {
-    this.user = new User();
-    this.user.email = email;
-    this.user.password = password;
+  // Form validations for login
+  buildForm() {
+    this.formLogin = this.formBuilder.group({
+      email:    ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
 
-    this.authService.userAuthentication(this.user).subscribe(data => {
+  // Method for the users sign in with application
+  OnLogin(): void {
+
+    this.authService.userAuthentication(this.formLogin.value).subscribe(data => {
 
       // Asgine the local data for token for configurate the session
       this.tokenService.setToken(data.token);
@@ -43,21 +53,30 @@ export class LoginComponent implements OnInit {
       this.tokenService.setAuthorities(data.authorities);
 
       // Data of the session login
-      this.isLogged = true;
       this.isLoginFail = false;
       this.roles = this.tokenService.getAuthorities();
 
       // Roload the web application in the url current
       window.location.reload();
-
-      // Redirect to page home
-      //this.router.navigate(['/home']);
     },
-
     (error: any) => { // Control errors in the login
       this.isLogged = false;
       this.isLoginFail = true;
-      this.errorMsg = error.error.message;
+      console.log(error.error.status);
+      if (error.error.status === 401) {
+        this.message = 'This email or password is incorrect';
+      } else if (error.error.status === undefined) {
+        this.message = error.error;
+      } else {
+        this.message = error.error.message;
+      }
     });
+  }
+
+  // Validation for check if exists email in database
+  validateEmail(control: AbstractControl) {
+    return this.authService.existsEmail(control.value).pipe(
+      map(result => result ? null : { emailNotExists: true })
+    );
   }
 }

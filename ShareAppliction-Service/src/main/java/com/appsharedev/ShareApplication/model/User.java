@@ -1,14 +1,7 @@
 package com.appsharedev.ShareApplication.model;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.Collection;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,39 +20,44 @@ public class User {
     // Column first name of user is not null
     @Column(name = "PASSWORD", nullable = false)
     /* Validation */
-    @NotBlank(message = "Password is mandatory")
-    @Size(min=8, message = "Password should have 8 characteres min")
+    @NotBlank(message = "The password is a mandatory field")
+    @Size(min=8, message = "The password should have 8 characters minimum")
+    // This format is regular expression so that password has numbers and letters
+    //@Pattern(regexp = "^[a-zA-Z]\\w{3,14}$", message = "The password should have numbers and letters")
     private String password;
 
 //DOCUMENT
     // Column document of user and unique in the table, is not null
     @Column(name = "DOCUMENT_USER", nullable = false, unique = true)
     /* Validation */
-    @NotNull(message = "Document is mandatory")
+    @NotNull(message = "The document is a mandatory field")
+    @Min(value = 1, message = "The document is a number positive")
     private Integer document;
 
 //FIRSTNAME
     // Column first name of user is not null
     @Column(name = "FIRST_NAME", nullable = false)
     /* Validation */
-    @NotBlank(message = "First name is mandatory")
-    @Size(min=2, max=30)
+    @NotBlank(message = "The first name is a mandatory field")
+    @Size(min=2, max=20, message = "The first name should have of 2 to 20 characters")
     private String firstname;
 
 //LASTNAME
     // Column last name of user is not null
     @Column(name = "LAST_NAME", nullable = false)
     /* Validation */
-    @NotBlank(message = "Last name is mandatory")
-    @Size(min=2, max=30)
+    @NotBlank(message = "The last name is a mandatory field")
+    @Size(min=2, max=20, message = "The last name should have of 2 to 20 characters")
     private String lastname;
 
 //EMAIL
     // Column email of user is not null
     @Column(name = "EMAIL_USER", nullable = false, unique = true)
     /* Validation */
-    @NotBlank(message = "Email is mandatory")
-    @Email
+    @NotBlank(message = "The email is a mandatory field")
+    @Email(message = "The email field haven't the correct format")
+    // This format is regular expression so that email has format of the unal
+    //@Pattern(regexp = "^[a-z0-9._%+-]+@unal.edu.co$", message = "The password should have numbers and letters")
     private String email;
 
 //ROLES
@@ -140,7 +138,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + firstname +
+                ", document='" + document +
+                ", first name='" + firstname +
+                ", last name='" + lastname +
+                ", email='" + email +
                 '}';
     }
 }

@@ -4,7 +4,11 @@
       <h3>Users</h3>
     </div>
     <div class="card-body"></div>
-    <table *ngIf="isLogin === true" class="table table-dark">
+
+    <div class="loader-page" *ngIf="loading"></div>
+
+    <table *ngIf="isLogin === true && !loading" class="table table-dark">
+
       <thead>
         <tr>
           <th>DOCUMENT</th>
@@ -16,7 +20,8 @@
           <th scope="col" *ngIf="roles[IS_ROL_ADMIN] === 'admin'">BORRAR</th>
         </tr>
       </thead>
-      <tbody>
+
+      <tbody *ngIf="users">
         <tr *ngFor="let user of users">
           <td>{{user.document}}</td>
           <td>{{user.firstname}}</td>
